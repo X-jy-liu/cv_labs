@@ -52,6 +52,9 @@ for xi in X:
 
 im = plt.imread("res/highway.jpg")
 plt.imshow(im)
+print(len(yl))
+print(len(X))
+print(X)
 plt.plot(yl, X, '-', linewidth=3, color='firebrick')
 plt.plot(yr, X, '-', linewidth=3, color='firebrick')
 

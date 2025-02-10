@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.signal import correlate, convolve, convolve2d
+from scipy.ndimage.filters import median_filter, gaussian_filter
 import time
 
 from utils import read_img_mono, display_img, save_img
@@ -28,24 +29,31 @@ edges_detected_conv = convolve(img, conv_filter, mode="same")
 # display_img(edges_detected_conv)
 # Correlation
 # time.sleep(2)
-edges_detected_corr = correlate(img, corr_filter, mode="same")
-# display_img(edges_detected_corr)
+img_without_blur = img.copy()
+edges_detected_corr = correlate(img_without_blur, corr_filter, mode="same")
+display_img(edges_detected_corr)
+time.sleep(2)
+img_blur = gaussian_filter(img,sigma=2)
+display_img(img_blur)
+time.sleep(2)
+edges_detected_corr = correlate(img_blur, corr_filter, mode="same")
+display_img(edges_detected_corr)
 
 # horizontal convolution
 hor_edges_detected_conv = convolve(img, hor_filter, mode="same")
 # display_img(hor_edges_detected_conv)
 
 
-# Prewitt's kernels.
-Mx = [[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]]
-My = [[1, 1, 1], [0, 0, 0], [-1, -1, -1]]
+# # Prewitt's kernels.
+# Mx = [[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]]
+# My = [[1, 1, 1], [0, 0, 0], [-1, -1, -1]]
 
-dMx = convolve2d(img, Mx, mode="same")
-dMy = convolve2d(img, My, mode="same")
-edge_magnitude = np.sqrt(np.square(dMx) + np.square(dMy)).astype(np.uint8)
+# dMx = convolve2d(img, Mx, mode="same")
+# dMy = convolve2d(img, My, mode="same")
+# edge_magnitude = np.sqrt(np.square(dMx) + np.square(dMy)).astype(np.uint8)
 
-display_img(dMx)
-display_img(dMy)
-display_img(edge_magnitude)
+# display_img(dMx)
+# display_img(dMy)
+# display_img(edge_magnitude)
 
-save_img(edge_magnitude, "puppy_edge_magnitude.jpg")
+# save_img(edge_magnitude, "puppy_edge_magnitude.jpg")
